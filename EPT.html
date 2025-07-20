@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Test Vocacional Perú</title>
+  <style>
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      margin: 0;
+      padding: 0;
+      background: #f2f6fc;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+    }
+    .container {
+      max-width: 800px;
+      background: white;
+      padding: 30px;
+      box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+      border-radius: 12px;
+    }
+    h1, h2 {
+      text-align: center;
+      color: #2c3e50;
+    }
+    .section {
+      margin-bottom: 30px;
+    }
+    .question {
+      margin: 15px 0;
+    }
+    select, input, button {
+      width: 100%;
+      padding: 10px;
+      margin-top: 5px;
+      margin-bottom: 15px;
+      border: 1px solid #ccc;
+      border-radius: 6px;
+      font-size: 16px;
+    }
+    button {
+      background-color: #3498db;
+      color: white;
+      border: none;
+      cursor: pointer;
+    }
+    button:hover {
+      background-color: #2980b9;
+    }
+    #resultado, #llamada-msg, #carreras, #info-carrera {
+      font-weight: bold;
+      color: #2c3e50;
+      text-align: center;
+      white-space: pre-wrap;
+      display: block;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>Test Vocacional Perú</h1>
+
+    <div class="section" id="test-vocacional">
+      <h2>Test Vocacional</h2>
+      <div class="question">
+        <label>1. ¿Qué tipo de tareas disfrutas más?</label>
+        <select id="q1">
+          <option value="ingenieria">Resolver problemas lógicos</option>
+          <option value="salud">Cuidar personas</option>
+          <option value="arte">Crear contenido visual</option>
+          <option value="negocios">Organizar y liderar equipos</option>
+          <option value="letras">Leer y escribir</option>
+        </select>
+      </div>
+      <div class="question">
+        <label>2. ¿Qué asignatura te gustaba más en el colegio?</label>
+        <select id="q2">
+          <option value="ingenieria">Matemática</option>
+          <option value="salud">Biología</option>
+          <option value="arte">Arte</option>
+          <option value="negocios">Economía</option>
+          <option value="letras">Comunicación</option>
+        </select>
+      </div>
+      <div class="question">
+        <label>3. ¿Cómo prefieres trabajar?</label>
+        <select id="q3">
+          <option value="ingenieria">Con máquinas y tecnología</option>
+          <option value="salud">Con personas</option>
+          <option value="arte">Con ideas creativas</option>
+          <option value="negocios">Con números y planes</option>
+          <option value="letras">Con palabras</option>
+        </select>
+      </div>
+      <button onclick="realizarTest()">Ver Resultado</button>
+      <p id="resultado"></p>
+    </div>
+
+    <div class="section" id="llamadas">
+      <h2>Realizar Llamada</h2>
+      <label for="telefono">Número de teléfono:</label>
+      <input type="tel" id="telefono" placeholder="Ej. +51 987654321">
+      <button onclick="hacerLlamada()">Llamar</button>
+      <p id="llamada-msg"></p>
+    </div>
+
+    <div class="section" id="universidades">
+      <h2>Universidades y Carreras</h2>
+      <label for="universidad">Selecciona una universidad:</label>
+      <select id="universidad">
+        <option value="UNMSM">Universidad Nacional Mayor de San Marcos</option>
+        <option value="PUCP">Pontificia Universidad Católica del Perú</option>
+        <option value="UNI">Universidad Nacional de Ingeniería</option>
+        <option value="UNFV">Universidad Nacional Federico Villarreal</option>
+        <option value="UPCH">Universidad Peruana Cayetano Heredia</option>
+        <option value="UNT">Universidad Nacional de Trujillo</option>
+        <option value="UNSAAC">Universidad Nacional de San Antonio Abad del Cusco</option>
+      </select>
+      <button onclick="mostrarCarreras()">Ver Carreras</button>
+
+      <div id="carrera-container" style="display: none;">
+        <label for="carrera">Selecciona una carrera:</label>
+        <select id="carrera"></select>
+        <button onclick="mostrarInformacionCarrera()">Ver Información</button>
+      </div>
+
+      <p id="carreras"></p>
+      <p id="info-carrera"></p>
+    </div>
+  </div>
+
+  <script>
+    function realizarTest() {
+      const respuestas = [
+        document.getElementById('q1').value,
+        document.getElementById('q2').value,
+        document.getElementById('q3').value
+      ];
+      const conteo = {};
+      respuestas.forEach(r => conteo[r] = (conteo[r] || 0) + 1);
+      let afinidad = Object.keys(conteo).reduce((a, b) => conteo[a] > conteo[b] ? a : b);
+
+      const descripciones = {
+        ingenieria: "Podrías destacar en carreras como Ingeniería de Sistemas, Mecatrónica o Civil. Son ideales para quienes disfrutan la lógica y la tecnología.",
+        salud: "Podrías considerar estudiar Medicina, Enfermería o Psicología. Son carreras orientadas a ayudar y comprender a los demás.",
+        arte: "Diseño gráfico, Comunicación audiovisual o Bellas Artes son opciones donde podrías expresar tu creatividad.",
+        negocios: "Carreras como Administración, Economía o Marketing te permitirán liderar y tomar decisiones estratégicas.",
+        letras: "Educación, Literatura o Ciencias de la Comunicación podrían ser opciones ideales si disfrutas trabajar con el lenguaje."
+      };
+
+      const resultado = document.getElementById('resultado');
+      resultado.innerText = `Área sugerida: ${afinidad.toUpperCase()}\n${descripciones[afinidad]}`;
+      resultado.style.display = 'block';
+    }
+
+    function hacerLlamada() {
+      const telefono = document.getElementById('telefono').value;
+      const msg = document.getElementById('llamada-msg');
+      if (telefono) {
+        msg.innerText = `Simulando llamada a ${telefono}...`;
+      } else {
+        msg.innerText = "Por favor ingresa un número válido.";
+      }
+      msg.style.display = 'block';
+    }
+
+    function mostrarCarreras() {
+      const universidad = document.getElementById('universidad').value;
+      const carreras = {
+        UNMSM: ["Medicina", "Derecho", "Ingeniería de Sistemas"],
+        PUCP: ["Diseño Gráfico", "Psicología", "Ingeniería Industrial"],
+        UNI: ["Ingeniería Civil", "Ingeniería Electrónica", "Ingeniería de Minas"],
+        UNFV: ["Trabajo Social", "Administración", "Turismo"],
+        UPCH: ["Medicina", "Enfermería", "Biología"],
+        UNT: ["Contabilidad", "Derecho", "Educación"],
+        UNSAAC: ["Ingeniería Electrónica", "Turismo", "Ciencias de la Comunicación"]
+      };
+
+      const opciones = carreras[universidad];
+      document.getElementById('carrera-container').style.display = 'block';
+
+      const selectCarrera = document.getElementById('carrera');
+      selectCarrera.innerHTML = '';
+      opciones.forEach(carrera => {
+        const option = document.createElement('option');
+        option.value = carrera;
+        option.textContent = carrera;
+        selectCarrera.appendChild(option);
+      });
+
+      document.getElementById('carreras').innerText = `Carreras ofrecidas por ${universidad}:`;
+    }
+
+    function mostrarInformacionCarrera() {
+      const carrera = document.getElementById('carrera').value;
+      const info = {
+        "Medicina": "Duración: 7 años. Perfil: Diagnóstico, tratamiento y prevención de enfermedades. Campo laboral: hospitales, clínicas, investigación.",
+        "Derecho": "Duración: 5 años. Perfil: Defensa jurídica y asesoramiento legal. Campo laboral: estudios jurídicos, sector público y privado.",
+        "Ingeniería de Sistemas": "Duración: 5 años. Perfil: Desarrollo de software, redes y sistemas informáticos. Campo laboral: empresas tecnológicas, consultoras.",
+        "Diseño Gráfico": "Duración: 5 años. Perfil: Comunicación visual, branding, ilustración. Campo laboral: agencias creativas, freelance.",
+        "Psicología": "Duración: 5 años. Perfil: Evaluación y tratamiento del comportamiento humano. Campo laboral: clínicas, colegios, empresas.",
+        "Ingeniería Industrial": "Duración: 5 años. Perfil: Optimización de procesos. Campo laboral: manufactura, logística, consultoría.",
+        "Ingeniería Civil": "Duración: 5 años. Perfil: Diseño y construcción de infraestructura. Campo laboral: construcción, obras públicas.",
+        "Ingeniería Electrónica": "Duración: 5 años. Perfil: Diseño de circuitos y dispositivos electrónicos. Campo laboral: tecnología, telecomunicaciones.",
+        "Ingeniería de Minas": "Duración: 5 años. Perfil: Extracción de minerales. Campo laboral: minería, geología.",
+        "Trabajo Social": "Duración: 5 años. Perfil: Intervención social y comunitaria. Campo laboral: ONGs, municipios, hospitales.",
+        "Administración": "Duración: 5 años. Perfil: Gestión de empresas. Campo laboral: sector privado y público.",
+        "Turismo": "Duración: 5 años. Perfil: Promoción y desarrollo de servicios turísticos. Campo laboral: agencias, gobiernos locales.",
+        "Enfermería": "Duración: 5 años. Perfil: Cuidado de pacientes. Campo laboral: hospitales, clínicas.",
+        "Biología": "Duración: 5 años. Perfil: Investigación y conservación de seres vivos. Campo laboral: laboratorios, investigación científica.",
+        "Contabilidad": "Duración: 5 años. Perfil: Gestión financiera y auditoría. Campo laboral: empresas, sector público.",
+        "Educación": "Duración: 5 años. Perfil: Enseñanza y formación académica. Campo laboral: colegios, institutos, universidades.",
+        "Ciencias de la Comunicación": "Duración: 5 años. Perfil: Comunicación en medios, relaciones públicas y periodismo. Campo laboral: medios de comunicación, agencias, empresas."
+      };
+
+      const infoParrafo = document.getElementById('info-carrera');
+      infoParrafo.innerText = info[carrera] || "Información no disponible.";
+      infoParrafo.style.display = 'block';
+    }
+  </script>
+</body>
+</html>
